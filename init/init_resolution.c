@@ -17,9 +17,8 @@ static void check_correct_size_window(t_cub3d *cube, int i, char *line)
         cube->map.widthscreen = 2560;
     if (cube->map.heightscreen >= 1440)
         cube->map.heightscreen = 1440;
-    //init_window(cube);
+    init_window(cube);
     (cube->map.all_param)++;
-    printf("%d%d", cube->map.widthscreen, cube->map.heightscreen);
 }
 
 void    init_resolution(t_cub3d *cube, char *line)

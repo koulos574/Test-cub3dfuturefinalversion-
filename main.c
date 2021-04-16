@@ -23,19 +23,24 @@
 //         init_map(cube, str);
 // }
 
-void        check_info (t_cub3d *cube, char *str)
+void        check_info(t_cub3d *cube, char *str)
 {
     if (str[0] == 'R')
         init_resolution(cube, str);
     if (str[0] == 'N' && str[1] == 'O')
-        init_texture(cube, &cube->t_text[0], str);
+        init_texture(cube, &cube->text[0], str);
     if (str[0] == 'W' && str[1] == 'E')
-        init_texture(cube, &cube->t_text[1], str);
+        init_texture(cube, &cube->text[1], str);
     if (str[0] == 'S' && str[1] == 'O')
-         init_texture(cube, &cube->t_text[2], str);
+         init_texture(cube, &cube->text[2], str);
     if (str[0] == 'E' && str[1] == 'A')
-        init_texture(cube, &cube->t_text[3], str);
-
+        init_texture(cube, &cube->text[3], str);
+    if (str[0] == 'S' && str[1] != 'O')
+        init_texture(cube, &cube->text[4], str);
+    if (str[0] == 'F')
+        init_color(cube, str, &cube->map.color_floor);
+    if (str[0] == 'C')
+        init_color(cube, str, &cube->map.color_ceiling);
 }
 
 void		init_window(t_cub3d *cube)

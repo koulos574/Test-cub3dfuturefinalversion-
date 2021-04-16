@@ -6,7 +6,7 @@
 /*   By: vifontai <vifontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 12:28:34 by vifontai          #+#    #+#             */
-/*   Updated: 2021/04/16 15:18:33 by vifontai         ###   ########.fr       */
+/*   Updated: 2021/04/16 18:06:57 by vifontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 #include "gnl/get_next_line.h"
-//#include "minilibx_macos/mlx.h"
+#include "minilibx_macos/mlx.h"
 #include "libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,9 +33,20 @@
 # define WHITE 0xFFFFFF
 # define YELLOW 0xFFFF00
 
+
+
+typedef struct  s_color {
+  int           r;
+  int           g;
+  int           b;
+  int           color;
+}               t_color;
+
 typedef struct  s_map_info {
   int           widthscreen;
   int           heightscreen;
+  t_color       color_floor;
+  t_color       color_ceiling;
   int           all_param;
 }               t_map_info;
 
@@ -109,7 +120,7 @@ typedef struct s_sprite
 }               t_sprite;  
 
 /*
-** NO --> 0, WE --> 1, SO --> 2, EA --> 3
+** NO --> 0, WE --> 1, SO --> 2, EA --> 3, Sprite --> 4
 */
 
 typedef struct 	s_cub3d {
@@ -132,9 +143,20 @@ void  free_all_and_exit(t_cub3d *cube);
 void  init_resolution(t_cub3d *cube, char *str);
 
 /*
+** init_textures
+*/
+void  init_texture(t_cub3d *cube, t_text *txt, char * str);
+
+/*
+** init_color
+*/
+
+void  init_color(t_cub3d *cube, char *line, t_color *color);
+
+/*
 ** main
 */
-void init(t_cub3d *cube);
+void init_window(t_cub3d *cube);
 
 
 
