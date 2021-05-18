@@ -1,15 +1,9 @@
 #include "../cub3d.h"
 
-static void ft_convert_color(t_color *color)
-{
-  color->color = 0;
-  color->color += color->r << 16;
-  color->color += color->g << 8;
-  color->color += color->b;
-}
-
 static int ft_space(char *str, int i)
 {
+    while (ft_isdigit(str[i]))
+        i++;
     while (str[i] == ' ')
         i++;
     while (str[i] == ',')
@@ -17,9 +11,17 @@ static int ft_space(char *str, int i)
     return (i);
 }
 
+static void ft_check_and_make_color(t_cub3d *cube, int r, int g, int b, int color)
+{
+    if ((r < 0 || 255 < r) || (g < 0 || 255 < g) || (b < 0 || 255 < b))
+        ft_err(cube, "wrong data for colors");
+    color = r;
+	color = (color << 8) + g;
+	color = (color << 8) + b;
+}
+
 void    init_color(t_cub3d *cube, char *line, t_color *color)
 {
-    printf("je dois encore finir les couleurs");
     int i;
 
     i = 1;
@@ -34,11 +36,11 @@ void    init_color(t_cub3d *cube, char *line, t_color *color)
     }
     i = 1;
     i = ft_space(line, i);
-    color->r = ft_atoi(line);
+    color->r = ft_atoi(&line[i]);
     i = ft_space(line, i);
-    color->g = ft_atoi(line);
+    color->g = ft_atoi(&line[i]);
     i = ft_space(line, i);
-    color->b = ft_atoi(line);
-    ft_convert_color(color);
+    color->b = ft_atoi(&line[i]);
+    ft_check_and_make_color(cube, color->r, color->g, color->b, color->color);
     (cube->map.all_param)++;
 }

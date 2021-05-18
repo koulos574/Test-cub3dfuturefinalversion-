@@ -23,53 +23,36 @@
 //         init_map(cube, str);
 // }
 
-void        check_info(t_cub3d *cube, char *str)
+static void     game_start(t_cub3d *cube)
 {
-    if (str[0] == 'R')
-        init_resolution(cube, str);
-    if (str[0] == 'N' && str[1] == 'O')
-        init_texture(cube, &cube->text[0], str);
-    if (str[0] == 'W' && str[1] == 'E')
-        init_texture(cube, &cube->text[1], str);
-    if (str[0] == 'S' && str[1] == 'O')
-         init_texture(cube, &cube->text[2], str);
-    if (str[0] == 'E' && str[1] == 'A')
-        init_texture(cube, &cube->text[3], str);
-    if (str[0] == 'S' && str[1] != 'O')
-        init_texture(cube, &cube->text[4], str);
-    if (str[0] == 'F')
-        init_color(cube, str, &cube->map.color_floor);
-    if (str[0] == 'C')
-        init_color(cube, str, &cube->map.color_ceiling);
+    mlx_hook(cube->mlx.win, 2, 0, key_press, cube);
+    mlx_hook(cube->mlx.win, 3, 0, key_release, cube);
+    mlx_hook(cube->mlx.win, 17, 0, free_all_and_exit, cube);
+    mlx_loop_hook(cube->mlx.ptr, raycasting, cube);
+    mlx_loop(cube->mlx.ptr);
 }
 
-void		init_window(t_cub3d *cube)
+static void     lets_go(t_cub3d *cube, char *map, int save)
 {
-  cube->mlx.ptr = mlx_init();
-	cube->mlx.win = mlx_new_window(cube->mlx.ptr, WIDTH, HEIGHT, "argh");
-	cube->mlx.img.image = mlx_new_image(cube->mlx.ptr, WIDTH, HEIGHT);
-	cube->mlx.img.addr = mlx_get_data_addr(cube->mlx.img.image, &(cube->mlx.img.bpp), &(cube->mlx.img.line_length), &(cube->mlx.img.endian));
+    cube = (t_cub3d *)malloc(sizeof(t_cub3d));
+    init_all_var(cube);
+    read_map(cube, map);
+    game_start(cube);
 }
 
-int     main(int ac, char **av)
+int             main(int ac, char **av)
 {
+    // gcc main.c ft_error.c  gnl/*.c init/*.c libft/*.c -L ./minilibx_macos/ -lmlx -framework OpenGL -framework AppKit && ./a.out map.cub
     t_cub3d cube;
-    int fd;
-    char *line;
 
-    fd = 0;
-    cube.map.all_param = 0;
-    if ((fd = open(av[1], O_RDONLY)) == -1)
-        return (ft_err(&cube, "File does not exist"));
-    while (get_next_line(fd, &line))
-    {
-        printf("gnl : %s\n", line);
-        check_info(&cube, line);
-        ft_strdel_gnl(&line);
-    }
-    printf("need all in order to check map %d", cube.map.all_param);
-    close(fd);
+
+    //if (!(cube = (t_cub3d)malloc(sizeof(t_cub3d)))
+    //    return(free_all_and_exit);
+    //je peux pas apl ft_err car je free cube la dedans donc bon, je peux pas free qqch que j'ai pas malloc
+    //if (ac < 2 || ac > 3)
+    //exit le game et free le cube
+    // else if (ac == 2 && !check les args le .cub)
+    // else if (ac == 3 && !check les args le .cub et bmp)
+    lets_go(&cube, av[1], 0);
     return (0);
-
-
 }

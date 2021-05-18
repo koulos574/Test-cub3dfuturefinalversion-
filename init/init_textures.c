@@ -12,8 +12,12 @@ void    init_texture(t_cub3d *cube, t_text *txt,char *line)
     if (!(txt->img = mlx_xpm_file_to_image(cube->mlx.ptr, &line[i], &width, &height)))
     {
         ft_strdel_gnl(&line);
-        ft_err(cube, "Wrong path for textures");
+        ft_err(cube, "textures could not load 1\n");
     }
-    txt->img_addr = mlx_get_data_addr(txt->img, &(txt->bpp), &(txt->length), &(txt->endian));
+    if (!(txt->img_addr = mlx_get_data_addr(txt->img, &(txt->bpp), &(txt->length), &(txt->endian))))
+    {
+        ft_strdel_gnl(&line);
+        ft_err(cube, "textures could not load 2\n");
+    }
     (cube->map.all_param)++;
 }
